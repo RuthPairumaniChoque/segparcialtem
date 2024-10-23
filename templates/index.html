@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <style>
+        
+        .recuadro {
+            border: 1px solid #000; /* Borde negro */
+            padding: 10px; /* Espacio interno */
+            margin: 20px; /* Margen externo */
+            background-color: #f9f9f9; /* Color de fondo */
+            width: 50%; /* Ajustar el ancho al contenido */
+        }
+        
+    
+    </style>
+</head>
+<body>
+    <h1>Gestion de Productos</h1>
+
+    <div class="recuadro">
+        <table >
+            <tr><td>SEGUNDO PARCIAL</td></tr>
+            <tr>
+                
+                <td>Nombre: Ruth Pairumani Choque</td>
+                
+            </tr>
+            <tr>
+                <td>Carnet: 9199405</td>
+                
+            </tr>
+        </table>
+    </div>
+
+    <a href="{{ url_for('add_product') }}">Nuevo Producto</a>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.nombre }}</td>
+            <td>{{ product.cantidad }}</td>
+            <td>{{ product.precio }}</td>
+            <td>{{ product.fecha_vencimiento }}</td>
+            <td>{{ product.categoria }}</td>
+            <td>
+                <a href="{{ url_for('edit_product', product_id=product.id) }}">Editar</a>
+                <a href="{{ url_for('delete_product', product_id=product.id) }}" 
+                   onclick="event.preventDefault(); 
+                   if(confirm('¿Estás seguro de que quieres eliminar este producto?')) { 
+                       this.closest('form').submit(); 
+                   }">
+                    Eliminar
+                </a>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
